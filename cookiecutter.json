@@ -1,0 +1,17 @@
+{
+author:"Some Guy",
+application_title: "Some Application",
+application_short_name: "someapp",
+memcache_host: "127.0.0.1",
+memcache_port: 11211,
+mongo_host: "localhost",
+mongo_port: 27017,
+broker_host: "localhost",
+broker_port: 5672,
+broker_vhost: "vhost",
+broker_user: "quser",
+broker_pass: "qpass",
+queue_tasks_org: "ouinformatics",
+queue_tasks_repo: "cybercomq",
+queue_tasks_branch: "master"
+}
