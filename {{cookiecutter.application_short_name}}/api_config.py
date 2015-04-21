@@ -1,8 +1,8 @@
-__author__ = '{{ author }}'
+__author__ = '{{cookiecutter.author }}'
 
 #****** Application Settings *******************************************************
 Page_Title = 'API'
-Application_Title = '{{ application_title }}'
+Application_Title = '{{cookiecutter.application_title }}'
 #****** Django Settings  ***********************************************************
 
 SECRET_KEY = '(This is a secret key. Update key to secure api)'
@@ -32,13 +32,13 @@ CSRF_COOKIE_DOMAIN = None
 MEMCACHE_HOST = "127.0.0.1"
 MEMCACHE_PORT = 11211
 
-MONGO_HOST = '{{ mongo_host }}'
-MONGO_PORT = {{ mongo_port }}
-MONGO_DB = "{{ application_shortname }}"
+MONGO_HOST = '{{cookiecutter.mongo_host }}'
+MONGO_PORT = {{cookiecutter.mongo_port }}
+MONGO_DB = "{{cookiecutter.application_shortname }}"
 MONGO_LOG_COLLECTION = "task_log"
 MONGO_TOMBSTONE_COLLECTION = "tombstone"
 
-BROKER_URL = 'pyamqp://{{broker_user}}:{{broker_pass}}@{{broker_host}}:{{broker_port}}/{{application_short_name}}'
+BROKER_URL = 'pyamqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.application_short_name}}'
 
 CELERY_RESULT_BACKEND = "mongodb"
 CELERY_MONGODB_BACKEND_SETTINGS = {
@@ -55,4 +55,4 @@ CATALOG_URI = 'mongodb://localhost:27017/'
 #*********** Data Store ************************************************
 # Default localhost
 DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','df']
-DATA_STORE_MONGO_URI = 'mongodb://{{mongo_host}}:{{mongo_port}}/'
+DATA_STORE_MONGO_URI = 'mongodb://{{cookiecutter.mongo_host}}:{{cookiecutter.mongo_port}}/'

@@ -1,5 +1,0 @@
-celery
-pymongo
-paramiko
-https://github.com/ouinformatics/dockertask/zipball/master
-https://github.com/{{queue_tasks_org}}/{{queue_tasks_repo}}/zipball/{{queue_tasks_branch}}
