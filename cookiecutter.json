@@ -13,5 +13,8 @@
 "broker_pass": "qpass",
 "queue_tasks_org": "ouinformatics",
 "queue_tasks_repo": "cybercomq",
-"queue_tasks_branch": "master"
+"queue_tasks_branch": "master",
+"celery_concurrency":8,
+"docker_worker":"example.oscer.ou.edu",
+"docker_username":"mstacy"
 }
