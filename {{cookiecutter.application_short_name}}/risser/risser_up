@@ -37,4 +37,4 @@ docker run --net=host -v {{cookiecutter.docker_host_data_directory}}/{{cookiecut
 
 #Clear memcache
 echo "******** Clearing Memcache ***************"
-echo 'flush_all' | nc {{memcache_host}} {{memcache_port}}
+echo 'flush_all' | nc {{cookiecutter.memcache_host}} {{cookiecutter.memcache_port}}
