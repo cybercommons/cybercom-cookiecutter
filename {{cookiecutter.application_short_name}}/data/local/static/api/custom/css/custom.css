@@ -1,0 +1,25 @@
+.navbar-inner{
+    background-color: #034482;
+    background-image:linear-gradient(to bottom,#04498c,#033c73);
+}
+
+.str, .atv {
+    color: #034482;
+}
+
+ul.breadcrumb {
+  margin: 10px 0 0 0;
+}
+.div_help{
+    border: 1px solid #034482;
+    padding:5px;
+    word-wrap:normal;
+
+}
+/*
+div.div_help .str, .atv .typ{
+    color: #000000;
+}
+p.typ{
+    color: #000000;
+}*/

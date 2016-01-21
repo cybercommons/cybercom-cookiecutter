@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Kill all docker containers
+docker kill $(docker ps -q)
+
+#sudo service docker stop
+#sudo service docker start
