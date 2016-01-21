@@ -28,7 +28,7 @@ docker exec -it $container apt-get install wget
 
 #API
 echo "*********  API       *********************"
-docker run -d  --net=host -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/risser_api:/usr/src/app -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3 -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data  api
+docker run -d  --net=host -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3 -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data  api
 
 #Ngnix
 echo "********* Ngnix       ********************"
