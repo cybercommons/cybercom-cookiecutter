@@ -5,5 +5,6 @@ from os.path import expanduser
 home = expanduser("~")
 
 current_dir =  os.getcwd() #os.path.dirname(os.path.realpath(__file__))
-cookiecutter('risser-cookiecutter/',
+print current_dir
+cookiecutter('risser-cookiecutter',
              extra_context={'docker_host_data_directory':current_dir,'user_home':home})
