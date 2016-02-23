@@ -55,4 +55,4 @@ CATALOG_URI = 'mongodb://{{cookiecutter.mongo_host }}:{{cookiecutter.mongo_port}
 DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue']
 DATA_STORE_MONGO_URI = 'mongodb://{{cookiecutter.mongo_host }}:{{cookiecutter.mongo_port}}/'
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
-DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}"
+DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name }}"
