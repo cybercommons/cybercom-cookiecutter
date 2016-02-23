@@ -20,7 +20,7 @@ docker exec -t $container rabbitmqctl set_permissions -p ${vhost} ${user} ".*" "
 
 #Celery
 echo "********** Celery Async Queue ************"
-docker run -d --net=host -v {{cookiecutter.user_home}}/.ssh:/root/.ssh -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data/celery/code:/code -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/log:/log -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data -e "docker_worker=$host_ip" -e "docker_username={{cookiecutter.docker_username}}"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
+docker run -d --net=host -v {{cookiecutter.user_home}}/.ssh:/root/.ssh -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/code:/code -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/log:/log -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data -e "docker_worker=$host_ip" -e "docker_username={{cookiecutter.docker_username}}"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
 sleep 5
 echo "********* Requires wget ************"
 container=$(docker ps | grep celery | awk '{print $1}')
