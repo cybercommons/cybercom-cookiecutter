@@ -1,4 +1,4 @@
-BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_password}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
+BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
 CELERY_SEND_EVENTS = True
 CELERY_TASK_RESULT_EXPIRES = None
 CELERY_ACCEPT_CONTENT = ['pickle','json']
