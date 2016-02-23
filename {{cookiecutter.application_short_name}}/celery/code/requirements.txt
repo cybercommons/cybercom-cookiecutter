@@ -1,5 +1,6 @@
 celery
 pymongo
 paramiko
+requests
 https://github.com/ouinformatics/dockertask/zipball/master
 https://github.com/{{cookiecutter.queue_tasks_org}}/{{cookiecutter.queue_tasks_repo}}/zipball/{{cookiecutter.queue_tasks_branch}}
