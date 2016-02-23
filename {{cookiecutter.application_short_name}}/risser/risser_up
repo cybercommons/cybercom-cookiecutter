@@ -13,7 +13,7 @@ docker run -d -p 5672:5672 -p 15672:15672 rabbitmq #cybercom/rabbitmq
 sleep 5
 echo "************** Setup Rabbitmq  ***********"
 container=$(docker ps | grep rabbitmq | awk '{print $1}')
-source config.sh
+source {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/risser/config.sh
 docker exec -t $container rabbitmqctl add_user ${user} ${password}
 docker exec -t $container rabbitmqctl add_vhost ${vhost}
 docker exec -t $container rabbitmqctl set_permissions -p ${vhost} ${user} ".*" ".*" ".*"
