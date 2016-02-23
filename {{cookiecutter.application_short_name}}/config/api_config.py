@@ -29,8 +29,8 @@ CSRF_COOKIE_DOMAIN = None
 #http://head.ouetag.org/api/api-auth/login/?next=/api/
 #******* Queue  *******************************************************
 
-MEMCACHE_HOST = "{{memcache_host}}"
-MEMCACHE_PORT = {{memcache_port}}
+MEMCACHE_HOST = "{{cookiecutter.memcache_host}}"
+MEMCACHE_PORT = {{cookiecutter.memcache_port}}
 
 MONGO_HOST = '{{cookiecutter.mongo_host }}'
 MONGO_PORT = {{cookiecutter.mongo_port}}
@@ -38,7 +38,7 @@ MONGO_DB = "{{cookiecutter.application_shortname }}"
 MONGO_LOG_COLLECTION = "task_log"
 MONGO_TOMBSTONE_COLLECTION = "tombstone"
 
-BROKER_URL = 'amqp://{{broker_user}}:{{broker_pass}}@{{broker_host}}:{{broker_port}}/{{broker_vhost}}'
+BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
 
 CELERY_RESULT_BACKEND = "mongodb"
 CELERY_MONGODB_BACKEND_SETTINGS = {
@@ -49,10 +49,10 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 
 #******* Catalog ******************************************************
 CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','mgmic_queue','test']
-CATALOG_URI = 'mongodb://localhost:27017/'
+CATALOG_URI = 'mongodb://{{cookiecutter.mongo_host }}:{{cookiecutter.mongo_port}}/'
 
 #*********** Data Store ************************************************
 DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue']
 DATA_STORE_MONGO_URI = 'mongodb://{{cookiecutter.mongo_host }}:{{cookiecutter.mongo_port}}/'
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
-DOCKER_HOST_DATA_DIRECTORY = "{{docker_host_data_directory}}"
+DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}"
