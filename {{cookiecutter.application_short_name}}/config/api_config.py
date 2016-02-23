@@ -34,7 +34,7 @@ MEMCACHE_PORT = {{cookiecutter.memcache_port}}
 
 MONGO_HOST = '{{cookiecutter.mongo_host }}'
 MONGO_PORT = {{cookiecutter.mongo_port}}
-MONGO_DB = "{{cookiecutter.application_shortname }}"
+MONGO_DB = "{{cookiecutter.application_short_name }}"
 MONGO_LOG_COLLECTION = "task_log"
 MONGO_TOMBSTONE_COLLECTION = "tombstone"
 
