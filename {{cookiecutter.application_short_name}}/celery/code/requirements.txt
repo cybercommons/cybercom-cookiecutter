@@ -1,6 +1,6 @@
-celery
-pymongo
-paramiko
-requests
+celery==3.1.22
+pymongo==3.2.1
+paramiko==1.16.0
+requests==2.9.1
 https://github.com/ouinformatics/dockertask/zipball/master
 https://github.com/{{cookiecutter.queue_tasks_org}}/{{cookiecutter.queue_tasks_repo}}/zipball/{{cookiecutter.queue_tasks_branch}}
