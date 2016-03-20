@@ -118,3 +118,12 @@ Docker Host Data Directory: This is a work around for the current working direct
 	12dba22cf2a9    rabbitmq         "/docker-entrypoint.s"
 	b7e6efd64e33    mongo            "/entrypoint.sh mongo"  	
 
+__Navigate to http://<< host >>/ or http://<< host >>/portal or http://<< host >>/api/__
+
+If install performed on Mac OSX system. Make sure your perform cookiecutter within your home directory. Virtualbox setup can only share directories within your home directory. Plus need to find ip address of virtualbox host. *__$ docker-machine ip default__*
+
+#####5) RESTful API and Portal Default User
+
+	username: admin
+	password: admin
+	
