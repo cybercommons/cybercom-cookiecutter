@@ -1,6 +1,9 @@
 #!/bin/bash
 
+#Docker worker host
 host_ip="{{cookiecutter.docker_worker}}"
+#If docker is going to ssh to docker host. Need to setup keys and docker_username.
+docker_username="{{cookiecutter.docker_username}}"
 
 #Mongo Data Node
 echo "************** Mongo Data Node ***********"
@@ -20,7 +23,8 @@ docker exec -t $container rabbitmqctl set_permissions -p ${vhost} ${user} ".*" "
 
 #Celery
 echo "********** Celery Async Queue ************"
-docker run -d --net=host -v {{cookiecutter.user_home}}/.ssh:/root/.ssh:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/code:/code:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -e "docker_worker=$host_ip" -e "docker_username={{cookiecutter.docker_username}}"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
+#-v path_to_key/.ssh:/root/.ssh:z
+docker run -d --net=host -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/code:/code:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -e "docker_worker=$host_ip" -e "docker_username=$docker_username"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
 sleep 5
 echo "********* Requires wget ************"
 container=$(docker ps | grep celery | awk '{print $1}')

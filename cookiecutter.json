@@ -17,6 +17,6 @@
 "celery_concurrency":8,
 "docker_worker":"example.oscer.ou.edu",
 "docker_username":"mstacy",
-"docker_host_data_directory":"/opt",
-"user_home":"/home/mstacy"
+"docker_host_data_directory":"/opt"
 }
+#"user_home":"/home/mstacy"
