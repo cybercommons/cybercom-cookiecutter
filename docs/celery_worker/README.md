@@ -25,17 +25,18 @@ The execution units, called tasks, are executed concurrently on a single or more
 	         $ wget https://raw.githubusercontent.com/cybercommons/cybercom-cookiecutter/master/docs/celery_worker/celeryconfig.py
             $ wget https://raw.githubusercontent.com/cybercommons/cybercom-cookiecutter/master/docs/celery_worker/requirements.txt 
 
-        3. Update celeryconfig (replace <variables> with appropriate input.)
-        4. Activate virtual environment
+
+    3. Update celeryconfig (replace <variables> with appropriate input.)
+    4. Activate virtual environment
 
                 $ source /path/to/virtualenv/bin/activate
                 $ pip install -r requirements.txt
 
-        4. Start Celery Worker(run in foreground) 
+    4. Start Celery Worker(run in foreground) 
 
                 $ celery worker -l info -Q etag -n dev-mstacy1
 
-        5. Create bash script to run in backgroud
+    5. Create bash script to run in backgroud
 
-                [example_celery_up](example_celery_up)         
+        See example code above (example_celery_up.sh)         
 
