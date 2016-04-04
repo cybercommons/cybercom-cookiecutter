@@ -11,4 +11,6 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
     "taskmeta_collection": "tombstone"
 }
 #If you are pip installing the requirements.txt. It has the cybercomq repo. Example add task!
-CELERY_IMPORTS = ("cybercomq",)
+CELERY_IMPORTS = ("<github repo queue - example (cybercomq)>",)
+
+#The cybercomq install url would be included in the requirements.txt

@@ -22,4 +22,5 @@ The execution units, called tasks, are executed concurrently on a single or more
 	
 	         
 	         
-	         $ wget -r --no-parent https://github.com/cybercommons/cybercom-cookiecutter/blob/master/%7B%7Bcookiecutter.application_short_name%7D%7D/celery/code
+	         $ wget https://raw.githubusercontent.com/cybercommons/cybercom-cookiecutter/master/docs/celery_worker/celeryconfig.py
+                 $ wget https://raw.githubusercontent.com/cybercommons/cybercom-cookiecutter/master/docs/celery_worker/requirements.txt 
