@@ -1,5 +1,6 @@
 __author__ = '{{cookiecutter.author }}'
-
+import os
+appname = "{{cookiecutter.application_short_name }}" 
 #****** Application Settings *******************************************************
 Page_Title = 'API'
 Application_Title = '{{cookiecutter.application_title }}'
@@ -29,30 +30,32 @@ CSRF_COOKIE_DOMAIN = None
 #http://head.ouetag.org/api/api-auth/login/?next=/api/
 #******* Queue  *******************************************************
 
-MEMCACHE_HOST = "{{cookiecutter.memcache_host}}"
+MEMCACHE_HOST = "{0}".format(os.environ["{0}_MEMCACHE_PORT_11211_TCP_ADDR".format(appname.upper())])
 MEMCACHE_PORT = {{cookiecutter.memcache_port}}
 
-MONGO_HOST = '{{cookiecutter.mongo_host }}'
+MONGO_HOST = '{0}'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 MONGO_PORT = {{cookiecutter.mongo_port}}
 MONGO_DB = "{{cookiecutter.application_short_name }}"
 MONGO_LOG_COLLECTION = "task_log"
 MONGO_TOMBSTONE_COLLECTION = "tombstone"
 
-BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
+#BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
+BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{0}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
+BROKER_URL = BROKER_URL.format(os.environ["{0}_RABBITMQ_PORT_5672_TCP_ADDR".format(appname.upper())])
 
-CELERY_RESULT_BACKEND = "mongodb"
+
+CELERY_RESULT_BACKEND = "mongodb://{0}:27017/".format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname)])
 CELERY_MONGODB_BACKEND_SETTINGS = {
-    "host": MONGO_HOST,
     "database": MONGO_DB,
     "taskmeta_collection": MONGO_TOMBSTONE_COLLECTION
 }
 
 #******* Catalog ******************************************************
 CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','mgmic_queue','test']
-CATALOG_URI = 'mongodb://{{cookiecutter.mongo_host }}:{{cookiecutter.mongo_port}}/'
+CATALOG_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 
 #*********** Data Store ************************************************
 DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue']
-DATA_STORE_MONGO_URI = 'mongodb://{{cookiecutter.mongo_host }}:{{cookiecutter.mongo_port}}/'
+DATA_STORE_MONGO_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
 DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name }}"
