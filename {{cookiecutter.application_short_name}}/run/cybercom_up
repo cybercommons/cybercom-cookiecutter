@@ -44,7 +44,7 @@ docker exec -it $container apt-get install wget
 # Nginx - if only one platform on system can leave in setup. 
 # If multiple cybercommons application running on same system. Comment out and add service with nginx to match api reverse proxy ports from api. See nginx config an default!
 echo "********* Ngnix       ********************"
-docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -d nginx
+docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -d nginx
 
 
 #Clear memcache

@@ -44,7 +44,7 @@ BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{
 BROKER_URL = BROKER_URL.format(os.environ["{0}_RABBITMQ_PORT_5672_TCP_ADDR".format(appname.upper())])
 
 
-CELERY_RESULT_BACKEND = "mongodb://{0}:27017/".format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname)])
+CELERY_RESULT_BACKEND = "mongodb://{0}:27017/".format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 CELERY_MONGODB_BACKEND_SETTINGS = {
     "database": MONGO_DB,
     "taskmeta_collection": MONGO_TOMBSTONE_COLLECTION
