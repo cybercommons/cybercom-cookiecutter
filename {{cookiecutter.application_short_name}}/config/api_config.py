@@ -51,11 +51,12 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 }
 
 #******* Catalog ******************************************************
-CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','mgmic_queue','test']
+CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','test']
+CATALOG_INCLUDE = ['catalog']
 CATALOG_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 
 #*********** Data Store ************************************************
-DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue']
+DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','catalog']
 DATA_STORE_MONGO_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
 DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name }}"
