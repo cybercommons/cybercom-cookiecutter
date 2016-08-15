@@ -9,10 +9,7 @@ This repo uses cookiecutter to install the cyberCommons platform on a single nod
 
 1. Docker
     * [Docker Install Documentation](https://docs.docker.com/engine/installation/)
-2. Memcache (optional, but recommended!)
-    * RHEL/CentOS
-        * yum install memcached
-3. CookieCutter
+2. CookieCutter
     * pip install cookiecutter
 
 ##### CookieCutter
@@ -95,7 +92,7 @@ Docker: The docker_worker and docker_username are only used when celery tasks ar
 	
 	docker_host_data_directory [/opt]:
 	
-Docker Host Data Directory: This is a work around for the current working directory of cookiecutter. CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
+Docker Host Data Directory: This is a work around for the current install directory of cookiecutter. CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
 
 ######2) Build API Docker Container
 
