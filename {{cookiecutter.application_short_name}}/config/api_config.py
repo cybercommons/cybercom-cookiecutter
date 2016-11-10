@@ -1,5 +1,7 @@
 __author__ = '{{cookiecutter.author }}'
 import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 appname = "{{cookiecutter.application_short_name }}" 
 #****** Application Settings *******************************************************
 Page_Title = 'API'
@@ -27,7 +29,17 @@ ALLOWED_HOSTS = []
 # for cross-domain cookies, or use None for a standard domain cookie.
 SESSION_COOKIE_DOMAIN =None
 CSRF_COOKIE_DOMAIN = None
-#http://head.ouetag.org/api/api-auth/login/?next=/api/
+
+# Database
+# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+DATABASE_ROUTERS = []
 #******* Queue  *******************************************************
 
 MEMCACHE_HOST = "{0}".format(os.environ["{0}_MEMCACHE_PORT_11211_TCP_ADDR".format(appname.upper())])
