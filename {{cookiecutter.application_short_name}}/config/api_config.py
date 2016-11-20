@@ -13,10 +13,24 @@ SECRET_KEY = '(This is a secret key. Update key to secure api)'
 # proxy_set_header SCRIPT_NAME /api; # Not working in config. Temporary fix by add
 # FORCE_SCRIPT_NAME in Django settings.py
 # If None will default back to Nginx config.
-# Provide custom config.py with docker cybercom/api
-# docker run -v <path to config.py>:/usr/src/app/api/config.py cybercom/api
-
 FORCE_SCRIPT_NAME= '/api/'
+
+#Behind reverse proxy set header to trust for https
+#uncomment next two lines if https is needed and behind proxy
+#USE_X_FORWARDED_HOST =True
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+#NGINX EXAMPLE for https
+#   location  /api/ {
+#           add_header 'Access-Control-Allow-Origin' '*';
+#           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#           proxy_set_header Host $http_host;
+#           proxy_set_header X-Forwarded-Proto 'https';
+#           proxy_pass http://0.0.0.0:8080/ ;
+#    }
+# From above Access-Control-Allow-Origin is used to enable cross-orgin resource sharing(CORS)
+# Many different configurations - 'Access-Control-Allow-Origin' '*' allows all hosts. Please
+# check the docs depending on web server used. This example is for Nginx!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -63,12 +77,12 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 }
 
 #******* Catalog ******************************************************
-CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','test']
+CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','{{cookiecutter.application_short_name }}','test']
 CATALOG_INCLUDE = ['catalog']
 CATALOG_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 
 #*********** Data Store ************************************************
-DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','cybercom_queue','catalog']
+DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','{{cookiecutter.application_short_name }}','catalog']
 DATA_STORE_MONGO_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
 DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name }}"
