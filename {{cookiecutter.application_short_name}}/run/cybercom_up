@@ -7,7 +7,8 @@ docker_username="{{cookiecutter.docker_username}}"
 
 #Mongo Data Node
 echo "************** Mongo Data Node ***********"
-docker run -d  --name {{cookiecutter.application_short_name}}_mongo -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data/mongo:/data/db:z mongo # cybercom/mongo-datanode
+docker volume create --name {{cookiecutter.application_short_name}}_mongodata
+docker run -d  --name {{cookiecutter.application_short_name}}_mongo -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z mongo # cybercom/mongo-datanode
 #docker run -d --net=host  mongo --smallfiles #cybercom/mongo-datanode
 #Rabbitmq
 echo "************** Rabbitmq        ***********"
