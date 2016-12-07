@@ -41,7 +41,7 @@ Cookiecutter creates the following file structures:
 │   └── nginx.conf
 └── run
     ├── config.sh
-    ├── docker_restart (Kills all running Docker Container; Uncomment or add docker restart based on Linux Distro)
+    ├── appContainerKill (Kills all application Docker Container.)
     └── cybercom_up (Starts single node cyberCommons platform)
 ```
 ######1) Install Cybercommons Configuration 
