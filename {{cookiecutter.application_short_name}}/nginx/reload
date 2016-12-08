@@ -1,0 +1,6 @@
+#!/bin/bash
+
+docker kill {{cookiecutter.application_short_name}}_nginx
+docker rm {{cookiecutter.application_short_name}}_nginx
+
+docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/self-signed.conf:/etc/nginx/snippets/self-signed.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/keys/selfsigned.key:/etc/ssl/private/selfsigned.key -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/keys/selfsigned.crt:/etc/ssl/certs/selfsigned.crt -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/keys/dhparam.pem:/etc/ssl/certs/dhparam.pem -d nginx
