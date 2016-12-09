@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#generate key and certificate
-openssl req -x509 -nodes -days {{cookiecutter.ssl_valid_days}} -newkey rsa:2048 -keyout /keys/selfsigned.key -out /keys/selfsigned.crt -subj "/C=US/ST=Oklahoma/L=Norman/O=University of Oklahoma/CN={{cookiecutter.nginx_server_name}}"
-
-#generate dhparam
-openssl dhparam -out /keys/dhparam.pem 2048
