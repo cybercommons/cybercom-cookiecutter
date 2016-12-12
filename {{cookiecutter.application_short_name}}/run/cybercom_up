@@ -9,49 +9,42 @@ docker_username="{{cookiecutter.docker_username}}"
 echo "************** Mongo Data Node ***********"
 docker volume create --name {{cookiecutter.application_short_name}}_mongodata
 docker run -d  --name {{cookiecutter.application_short_name}}_mongo -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z mongo # cybercom/mongo-datanode
-#docker run -d --net=host  mongo --smallfiles #cybercom/mongo-datanode
+
 #Rabbitmq
 echo "************** Rabbitmq        ***********"
 docker run -d --name {{cookiecutter.application_short_name}}_rabbitmq  rabbitmq #cybercom/rabbitmq
-#wait for container
-sleep 5
-echo "************** Setup Rabbitmq  ***********"
-container=$(docker ps | grep {{cookiecutter.application_short_name}}_rabbitmq | awk '{print $1}')
-source {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/run/config.sh
-docker exec -t $container rabbitmqctl add_user ${user} ${password}
-docker exec -t $container rabbitmqctl add_vhost ${vhost}
-docker exec -t $container rabbitmqctl set_permissions -p ${vhost} ${user} ".*" ".*" ".*"
 
 #Celery
 echo "********** Celery Async Queue ************"
 #-v path_to_key/.ssh:/root/.ssh:z
-docker run -d --name {{cookiecutter.application_short_name}}_celery --link {{cookiecutter.application_short_name}}_rabbitmq --link {{cookiecutter.application_short_name}}_mongo  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/code:/code:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/celery/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -e "docker_worker=$host_ip" -e "docker_username=$docker_username"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
+docker run -d --name {{cookiecutter.application_short_name}}_celery --link {{cookiecutter.application_short_name}}_rabbitmq:cybercom_rabbitmq --link {{cookiecutter.application_short_name}}_mongo:cybercom_mongo  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/celery/code:/code:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -e "docker_worker=$host_ip" -e "docker_username=$docker_username"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
 
+#memcache
 echo "********* memcached   ********************"
 docker run --name {{cookiecutter.application_short_name}}_memcache -d memcached
 
 #API
 echo "*********  API       *********************"
-docker run -d --name {{cookiecutter.application_short_name}}_api --link {{cookiecutter.application_short_name}}_memcache --link {{cookiecutter.application_short_name}}_mongo --link {{cookiecutter.application_short_name}}_rabbitmq -p 8080:8080 -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z  api
-
-#-p 80:80  nginx
-
-# Special Setup Requirements
-sleep 5
-echo "********* Celery Requires wget ************"
-container=$(docker ps | grep {{cookiecutter.application_short_name}}_celery | awk '{print $1}')
-docker exec -it $container apt-get install wget
+docker run -d --name {{cookiecutter.application_short_name}}_api --link {{cookiecutter.application_short_name}}_memcache:cybercom_memcache --link {{cookiecutter.application_short_name}}_mongo:cybercom_mongo --link {{cookiecutter.application_short_name}}_rabbitmq:cybercom_rabbitmq -p 8080:8080 -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z  api
 
 # Nginx - if only one platform on system can leave in setup. 
 # If multiple cybercommons application running on same system. Comment out and add service with nginx to match api reverse proxy ports from api. See nginx config an default!
 {% if cookiecutter.ssl_self_signed == 'y' %}
 echo "********* Ngnix - ssl  ********************"
-docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/self-signed.conf:/etc/nginx/snippets/self-signed.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/keys/selfsigned.key:/etc/ssl/private/selfsigned.key -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/keys/selfsigned.crt:/etc/ssl/certs/selfsigned.crt -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/keys/dhparam.pem:/etc/ssl/certs/dhparam.pem -d nginx
+docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/self-signed.conf:/etc/nginx/snippets/self-signed.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/keys/selfsigned.key:/etc/ssl/private/selfsigned.key -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/keys/selfsigned.crt:/etc/ssl/certs/selfsigned.crt -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx/keys/dhparam.pem:/etc/ssl/certs/dhparam.pem -d nginx
 {% else %}
 echo "********* Ngnix        ********************"
-docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -d nginx
+docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -d nginx
 {% endif %}
 
-#Clear memcache
-#echo "******** Clearing Memcache ***************"
-#echo 'flush_all' | nc {{cookiecutter.memcache_host}} {{cookiecutter.memcache_port}}
+#Configure and add-ons to containers
+echo "******** Configure Cybercom **************"
+echo "******** Setup Rabbitmq  *****************"
+source {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/run/config.sh
+docker exec -t {{cookiecutter.application_short_name}}_rabbitmq rabbitmqctl add_user ${user} ${password}
+docker exec -t {{cookiecutter.application_short_name}}_rabbitmq rabbitmqctl add_vhost ${vhost}
+docker exec -t {{cookiecutter.application_short_name}}_rabbitmq rabbitmqctl set_permissions -p ${vhost} ${user} ".*" ".*" ".*"
+echo "********* Celery Requires wget ************"
+docker exec -it {{cookiecutter.application_short_name}}_celery apt-get install wget
+
+

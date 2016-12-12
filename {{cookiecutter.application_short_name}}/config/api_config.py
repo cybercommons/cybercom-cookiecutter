@@ -56,21 +56,19 @@ DATABASES = {
 DATABASE_ROUTERS = []
 #******* Queue  *******************************************************
 
-MEMCACHE_HOST = "{0}".format(os.environ["{0}_MEMCACHE_PORT_11211_TCP_ADDR".format(appname.upper())])
-MEMCACHE_PORT = {{cookiecutter.memcache_port}}
+MEMCACHE_HOST = "cybercom_memcache"
+MEMCACHE_PORT = 11211
 
-MONGO_HOST = '{0}'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
-MONGO_PORT = {{cookiecutter.mongo_port}}
+MONGO_HOST = "cybercom_mongo"
+MONGO_PORT = 27017 
 MONGO_DB = "{{cookiecutter.application_short_name }}"
 MONGO_LOG_COLLECTION = "task_log"
 MONGO_TOMBSTONE_COLLECTION = "tombstone"
 
-#BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{{cookiecutter.broker_host}}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
-BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@{0}:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
-BROKER_URL = BROKER_URL.format(os.environ["{0}_RABBITMQ_PORT_5672_TCP_ADDR".format(appname.upper())])
+BROKER_URL = 'amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@cybercom_rabbitmq:{{cookiecutter.broker_port}}/{{cookiecutter.broker_vhost}}'
 
 
-CELERY_RESULT_BACKEND = "mongodb://{0}:27017/".format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
+CELERY_RESULT_BACKEND = "mongodb://cybercom_mongo:27017/"
 CELERY_MONGODB_BACKEND_SETTINGS = {
     "database": MONGO_DB,
     "taskmeta_collection": MONGO_TOMBSTONE_COLLECTION
@@ -79,10 +77,11 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 #******* Catalog ******************************************************
 CATALOG_EXCLUDE = ['admin','local','cybercom_auth','system.users','default_collection','{{cookiecutter.application_short_name }}']
 CATALOG_INCLUDE = ['catalog']
-CATALOG_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
-
+CATALOG_URI = 'mongodb://cybercom_mongo:27017/'
+CATALOG_ANONYMOUS=True
 #*********** Data Store ************************************************
 DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','catalog','default_collection','{{cookiecutter.application_short_name }}',]
-DATA_STORE_MONGO_URI = 'mongodb://{0}:{{cookiecutter.mongo_port}}/'.format(os.environ["{0}_MONGO_PORT_27017_TCP_ADDR".format(appname.upper())])
+DATA_STORE_MONGO_URI = 'mongodb://cybercom_mongo:27017/'
+DATA_STORE_ANONYMOUS=True
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
 DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name }}"
