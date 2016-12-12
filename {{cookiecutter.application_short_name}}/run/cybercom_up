@@ -7,29 +7,29 @@ docker_username="{{cookiecutter.docker_username}}"
 
 #Mongo Data Node
 echo "************** Mongo Data Node ***********"
-docker run -d  --name {{cookiecutter.application_short_name}}_mongo -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data/mongo:/data/db:z mongo # cybercom/mongo-datanode
+docker run -d  --name {{cookiecutter.application_short_name}}_mongo:cybercom_mongo -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data/mongo:/data/db:z mongo # cybercom/mongo-datanode
 
 #Rabbitmq
 echo "************** Rabbitmq        ***********"
-docker run -d --name {{cookiecutter.application_short_name}}_rabbitmq  rabbitmq #cybercom/rabbitmq
+docker run -d --name {{cookiecutter.application_short_name}}_rabbitmq:cybercom_rabbitmq  rabbitmq #cybercom/rabbitmq
 
 #Celery
 echo "********** Celery Async Queue ************"
 #-v path_to_key/.ssh:/root/.ssh:z
-docker run -d --name {{cookiecutter.application_short_name}}_celery --link {{cookiecutter.application_short_name}}_rabbitmq --link {{cookiecutter.application_short_name}}_mongo  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/celery/code:/code:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -e "docker_worker=$host_ip" -e "docker_username=$docker_username"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
+docker run -d --name {{cookiecutter.application_short_name}}_celery:cybercom_celery --link {{cookiecutter.application_short_name}}_rabbitmq --link {{cookiecutter.application_short_name}}_mongo  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/celery/code:/code:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -e "docker_worker=$host_ip" -e "docker_username=$docker_username"  -e "C_FORCE_ROOT=true" -e "CELERY_CONCURRENCY={{cookiecutter.celery_concurrency}}" cybercom/celery
 
 #memcache
 echo "********* memcached   ********************"
-docker run --name {{cookiecutter.application_short_name}}_memcache -d memcached
+docker run --name {{cookiecutter.application_short_name}}_memcache:cybercom_memcache -d memcached
 
 #API
 echo "*********  API       *********************"
-docker run -d --name {{cookiecutter.application_short_name}}_api --link {{cookiecutter.application_short_name}}_memcache --link {{cookiecutter.application_short_name}}_mongo --link {{cookiecutter.application_short_name}}_rabbitmq -p 8080:8080 -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z  api
+docker run -d --name {{cookiecutter.application_short_name}}_api:cybercom_api --link {{cookiecutter.application_short_name}}_memcache --link {{cookiecutter.application_short_name}}_mongo --link {{cookiecutter.application_short_name}}_rabbitmq -p 8080:8080 -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/log:/log:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z  api
 
 # Nginx - if only one platform on system can leave in setup. 
 # If multiple cybercommons application running on same system. Comment out and add service with nginx to match api reverse proxy ports from api. See nginx config an default!
 echo "********* Ngnix       *********************"
-docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -d nginx
+docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx:cyebrcom_nginx  --link {{cookiecutter.application_short_name}}_api -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/nginx.conf:/etc/nginx/nginx.conf:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/default.conf:/etc/nginx/conf.d/default.conf:z -d nginx
 
 
 #Configure and add-ons to containers
