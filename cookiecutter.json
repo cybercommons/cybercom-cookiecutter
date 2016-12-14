@@ -6,7 +6,7 @@
 "ssl_self_signed": "y",
 "ssl_valid_days": 365,
 "broker_host": "localhost",
-"broker_port": 5672,
+"broker_port": 5671,
 "broker_vhost": "vhost",
 "broker_user": "quser",
 "broker_pass": "qpass",

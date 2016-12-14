@@ -1,4 +1,0 @@
-#!/bin/bash
-
-#generate keys for nginx
-docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/ssl/nginx:/sslnginx:z nginx ./sslnginx/generate

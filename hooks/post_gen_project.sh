@@ -7,3 +7,6 @@ git clone https://github.com/cybercommons/cybercom-api api_code # -v /api /usr/s
 #mv config/rabbitmq_config.sh docker/rabbitmq/config.sh
 #docker build -t api api_code/Dockerfile
 #docker/build.sh
+
+# Generate keys on creation
+./run/genSSLKeys

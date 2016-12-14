@@ -1,0 +1,33 @@
+#!/bin/bash
+rootpath=/sslrabbitmq
+testca=$rootpath/testca
+server=$rootpath/server
+client=$rootpath/client
+certpath=$testca/certs
+privpath=$testca/private
+mkdir $testca $server $client $certpath $privpath
+touch $testca/index.txt
+echo 01 > $testca/serial
+
+openssl req -x509 -config $rootpath/ca.conf -newkey rsa:2048 -days 365 \
+  -out $testca/cacert.pem -outform PEM -subj /CN=MyTestCA/ -nodes
+openssl x509 -in $testca/cacert.pem -out $testca/cacert.cer -outform DER
+
+# Create Server certs
+openssl genrsa -out $server/key.pem 2048
+openssl req -new -key $server/key.pem -out $server/req.pem -outform PEM \
+  -subj /CN=localhost/O=server/ -nodes
+openssl ca -config $rootpath/ca.conf -in $server/req.pem -out \
+  $server/cert.pem -notext -batch -extensions server_ca_extensions
+openssl pkcs12 -export -out $server/keycert.p12 -in $server/cert.pem \
+  -inkey $server/key.pem -passout pass:Secret
+
+#Create client certs
+openssl genrsa -out $client/key.pem 2048
+openssl req -new -key $client/key.pem -out $client/req.pem -outform PEM \
+  -subj /CN=localhost/O=client/ -nodes
+openssl ca -config $rootpath/ca.conf -in $client/req.pem -out $client/cert.pem \
+  -notext -batch -extensions client_ca_extensions
+openssl pkcs12 -export -out $client/keycert.p12 -in $client/cert.pem \
+  -inkey $client/key.pem -passout pass:Secret
+
