@@ -17,9 +17,9 @@ SECRET_KEY = '(This is a secret key. Update key to secure api)'
 FORCE_SCRIPT_NAME= '/api/'
 
 #Behind reverse proxy set header to trust for https
-#uncomment next two lines if https is needed and behind proxy
-{% if cookiecutter.ssl_self_signed !='y' %}#{% endif %}USE_X_FORWARDED_HOST =True
-{% if cookiecutter.ssl_self_signed !='y' %}#{% endif %}SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#replace values in next two lines with commented text if https is needed and behind proxy
+USE_X_FORWARDED_HOST = {% if cookiecutter.ssl_self_signed =='y' %}True{% else %}False  # True{% endif %}
+SECURE_PROXY_SSL_HEADER = {% if cookiecutter.ssl_self_signed =='y' %}('HTTP_X_FORWARDED_PROTO', 'https'){% else %}None  # ('HTTP_X_FORWARDED_PROTO', 'https'){% endif %}
 
 #NGINX EXAMPLE for https
 #   location  /api/ {
