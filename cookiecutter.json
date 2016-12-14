@@ -3,7 +3,7 @@
 "application_title": "Some Application",
 "application_short_name": "someapp",
 "nginx_server_name": "localhost",
-"ssl_self_signed": "y",
+"ssl_self_signed": ["n", "y"],
 "ssl_valid_days": 365,
 "broker_host": "localhost",
 "broker_port": 5671,
