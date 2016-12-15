@@ -24,7 +24,7 @@ openssl req -new -key $server/key.pem -out $server/req.pem -outform PEM \
 openssl ca -config $rootpath/ca.conf -in $server/req.pem -out \
   $server/cert.pem -notext -batch -extensions server_ca_extensions
 openssl pkcs12 -export -out $server/keycert.p12 -in $server/cert.pem \
-  -inkey $server/key.pem -passout pass:{{cookiecutter.broker_pass}}
+  -inkey $server/key.pem -passout file:$rootpath/keystoresecret
 
 #Create client certs
 openssl genrsa -out $client/key.pem 2048
@@ -33,5 +33,5 @@ openssl req -new -key $client/key.pem -out $client/req.pem -outform PEM \
 openssl ca -config $rootpath/ca.conf -in $client/req.pem -out $client/cert.pem \
   -notext -batch -extensions client_ca_extensions
 openssl pkcs12 -export -out $client/keycert.p12 -in $client/cert.pem \
-  -inkey $client/key.pem -passout pass:{{cookiecutter.broker_pass}}
+  -inkey $client/key.pem -passout file:$rootpath/keystoresecret
 
