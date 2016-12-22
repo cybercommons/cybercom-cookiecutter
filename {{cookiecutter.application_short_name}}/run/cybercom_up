@@ -18,6 +18,12 @@ docker run -d --name {{cookiecutter.application_short_name}}_mongo \
         --sslPEMKeyFile /sslmongodb/keys/mongodb.pem \
         --auth
 
+sleep 5
+
+echo "********* Add Mongo User  ***************"
+docker exec -it {{cookiecutter.application_short_name}}_mongo mongo --ssl --sslAllowInvalidCertificates admin \
+  --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+
 #Rabbitmq
 echo "************** Rabbitmq        ***********"
 docker run -d --name {{cookiecutter.application_short_name}}_rabbitmq \
@@ -97,8 +103,4 @@ echo "******** Configure Cybercom **************"
 
 echo "********* Celery Requires wget ************"
 docker exec -it {{cookiecutter.application_short_name}}_celery apt-get install wget
-
-echo "********* Add Mongo User  ***************"
-docker exec -it {{cookiecutter.application_short_name}}_mongo mongo --ssl --sslAllowInvalidCertificates admin \
-  --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
 
