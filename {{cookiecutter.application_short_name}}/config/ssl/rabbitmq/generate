@@ -9,6 +9,11 @@ server=$rootpath/server
 client=$rootpath/client
 certpath=$testca/certs
 privpath=$testca/private
+
+if [ -d $testca ]; then rm -rf $testca; fi
+if [ -d $server ]; then rm -rf $server; fi
+if [ -d $client ]; then rm -rf $client; fi
+
 mkdir $testca $server $client $certpath $privpath
 touch $testca/index.txt
 echo 01 > $testca/serial
