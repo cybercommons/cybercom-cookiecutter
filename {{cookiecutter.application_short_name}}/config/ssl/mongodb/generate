@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#generate key and certificate
+openssl req -newkey rsa:2048 -new -x509 -days {{cookiecutter.ssl_valid_days}} -nodes \
+  -out /sslmongodb/keys/mongodb-cert.crt \
+  -keyout /sslmongodb/keys/mongodb-cert.key \
+  -subj "/C=US/ST=Oklahoma/L=Norman/O=University of Oklahoma/CN=cybercom_mongo"
+
+#generate pem
+cat /sslmongodb/keys/mongodb-cert.key /sslmongodb/keys/mongodb-cert.crt > /sslmongodb/keys/mongodb.pem

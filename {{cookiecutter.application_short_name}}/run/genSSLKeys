@@ -11,3 +11,8 @@ docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/rabbitmq:/sslrabbitmq \
   nginx ./sslrabbitmq/generate
 
+#generate keys for mongodb and clients
+docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
+  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/mongodb:/sslmongodb \
+  nginx ./sslmongodb/generate
+
