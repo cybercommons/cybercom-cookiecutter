@@ -11,18 +11,18 @@ docker_username="{{cookiecutter.docker_username}}"
 #Mongo Data Node
 echo "************** Mongo Data Node ***********"
 docker volume create --name {{cookiecutter.application_short_name}}_mongodata
+if [ -f {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/thisisfirstrun ]; then
+  echo "*********** Create Mongo User ************"
+  docker run -it --rm -v someapp_mongodata:/data/db:z -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/config.sh:/config.sh -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/addmongouser:/addmongouser --entrypoint /addmongouser mongo
+  rm -f {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/thisisfirstrun
+fi
+
 docker run -d --name {{cookiecutter.application_short_name}}_mongo \
   -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/mongodb:/sslmongodb:z \
   mongo --sslMode requireSSL \
         --sslPEMKeyFile /sslmongodb/keys/mongodb.pem \
         --auth
-
-sleep 5
-
-echo "********* Add Mongo User  ***************"
-docker exec -it {{cookiecutter.application_short_name}}_mongo mongo --ssl --sslAllowInvalidCertificates admin \
-  --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
 
 #Rabbitmq
 echo "************** Rabbitmq        ***********"
