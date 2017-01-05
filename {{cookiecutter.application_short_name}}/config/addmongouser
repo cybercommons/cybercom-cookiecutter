@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This script is called inside a mongo container to create user account
+
+# Pull in config
+source /config.sh
+
+/usr/bin/mongod &
+
+sleep 5
+
+mongo admin --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+
+/usr/bin/mongod --shutdown
