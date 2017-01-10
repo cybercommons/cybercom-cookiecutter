@@ -92,19 +92,18 @@ docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_ng
   -v ${ssl_cert_path}:/etc/ssl/certs/selfsigned.crt \
   -v ${ssl_dhparam_path}:/etc/ssl/certs/dhparam.pem \
   -d nginx
-{% elif cookiecutter.use_ssl = 'LetsEncrypt' %}
+{% elif cookiecutter.use_ssl == 'LetsEncrypt' %}
 echo "********* Ngnix - Lets Encrypt SSL ********************"
-# TODO: Comfirm configurtaion
 docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_nginx \
   --link {{cookiecutter.application_short_name}}_api \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/data:/data:z \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/nginx.conf:/etc/nginx/nginx.conf:z \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/default.conf:/etc/nginx/conf.d/default.conf:z \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/self-signed.conf:/etc/nginx/snippets/self-signed.conf:z \
+  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/letsencrypt-signed.conf:/etc/nginx/snippets/letsencrypt-signed.conf:z \
   -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf:z \
-  -v ${ssl_key_path}:/etc/ssl/private/selfsigned.key \
-  -v ${ssl_cert_path}:/etc/ssl/certs/selfsigned.crt \
-  -v ${ssl_dhparam_path}:/etc/ssl/certs/dhparam.pem \
+  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt:/letsencrypt:z \
+  -d nginx
 {% else %}
 echo "********* Ngnix        ********************"
 docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx \
