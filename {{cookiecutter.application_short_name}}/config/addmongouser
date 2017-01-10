@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script is called inside a mongo container to create user account
+# This script is called inside a mongo container to create / udpate user account
 
 # Pull in config
 source /config.sh
@@ -9,6 +9,13 @@ source /config.sh
 
 sleep 5
 
+echo "<<<<<<<<<< Adding Mongo User >>>>>>>>>"
 mongo admin --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+
+if [ $? == 252 ]
+  then
+    echo "<<<<<<<<<< User Already Exists - Updating >>>>>>>>>" 
+    mongo admin --eval "db.updateUser('$mongo_username', { pwd: '$mongo_password', roles: [ { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
+fi
 
 /usr/bin/mongod --shutdown

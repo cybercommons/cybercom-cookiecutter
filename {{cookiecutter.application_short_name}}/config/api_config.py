@@ -18,8 +18,8 @@ FORCE_SCRIPT_NAME= '/api/'
 
 #Behind reverse proxy set header to trust for https
 #replace values in next two lines with commented text if https is needed and behind proxy
-USE_X_FORWARDED_HOST = {% if cookiecutter.ssl_self_signed =='y' %}True{% else %}False  # True{% endif %}
-SECURE_PROXY_SSL_HEADER = {% if cookiecutter.ssl_self_signed =='y' %}('HTTP_X_FORWARDED_PROTO', 'https'){% else %}None  # ('HTTP_X_FORWARDED_PROTO', 'https'){% endif %}
+USE_X_FORWARDED_HOST = {% if cookiecutter.use_ssl !='None' %}True{% else %}False  # True{% endif %}
+SECURE_PROXY_SSL_HEADER = {% if cookiecutter.use_ssl !='None' %}('HTTP_X_FORWARDED_PROTO', 'https'){% else %}None  # ('HTTP_X_FORWARDED_PROTO', 'https'){% endif %}
 
 #NGINX EXAMPLE for https
 #   location  /api/ {

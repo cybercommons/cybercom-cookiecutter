@@ -1,0 +1,9 @@
+#!/bin/bash
+
+docker run -it --rm \
+  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/entrypoint.sh:/entrypoint.sh \
+  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/etc:/etc/letsencrypt:z \
+  -v {{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/www:/www:z \
+  --entrypoint=/entrypoint.sh \
+  centos
+
