@@ -90,7 +90,7 @@ Celery Concurrency
 
 Docker: The docker_worker and docker_username are only used when celery tasks are going to create a sister/brother docker container to execute task. docker_worker is where the docker container will be created. The docker_username is a user with ssh keys and has privledges to run docker command. ssh keys are not setup and must be done to allow ssh to docker worker.
 	
-	docker_host_data_directory [/opt]:
+	application_install_directory [/opt]:
 	
 Docker Host Data Directory: This is a work around for the current install directory of cookiecutter. CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
 

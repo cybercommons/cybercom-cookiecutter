@@ -91,4 +91,4 @@ DATA_STORE_EXCLUDE = ['admin','local','cybercom_auth','system.users','catalog','
 DATA_STORE_MONGO_URI = 'mongodb://{{cookiecutter.broker_user}}:{{cookiecutter.broker_pass}}@cybercom_mongo:27017/?ssl=true&ssl_cert_reqs=CERT_NONE'
 DATA_STORE_ANONYMOUS=True
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
-DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.docker_host_data_directory}}/{{cookiecutter.application_short_name }}"
+DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name }}"
