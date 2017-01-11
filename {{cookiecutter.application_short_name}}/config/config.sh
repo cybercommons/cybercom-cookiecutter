@@ -13,3 +13,6 @@ ssl_dhparam_path={{cookiecutter.application_install_directory}}/{{cookiecutter.a
 mongo_username={{cookiecutter.broker_user}}
 mongo_password={{cookiecutter.broker_pass}}
 
+# uncomment and populate the following two lines for the resetDBCreds application to add / update the mongo user admin account
+#mongo_admin_username=
+#mongo_admin_password=
