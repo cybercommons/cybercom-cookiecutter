@@ -1,13 +1,9 @@
 #!/bin/bash
-
-yum install epel-release -y
-yum install certbot -y
-
-
+set -e
 if [ ! -f /etc/letsencrypt/renewal ]
   then
     certbot certonly --webroot -w /www -d {{cookiecutter.nginx_server_name}}
   else
-    certbot renew --quiet
+    certbot renew --noninteractive --quiet
 fi
 

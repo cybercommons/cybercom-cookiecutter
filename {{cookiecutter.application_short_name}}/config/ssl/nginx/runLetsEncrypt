@@ -1,9 +1,27 @@
 #!/bin/bash
 
+if [ -f {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/thisisfirstrun ]
+  then
+    # bootstrap webserver for initial cert creation
+    docker run -d --name certbot_nginx \
+      -p 80:80 \
+      -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/nginx-bootstrap.conf:/etc/nginx/conf.d/default.conf:z \
+      -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt:/letsencrypt:z \
+      nginx
+
+    sleep 5
+fi
+
 docker run -it --rm \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/entrypoint.sh:/entrypoint.sh \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/etc:/etc/letsencrypt:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/www:/www:z \
-  --entrypoint=/entrypoint.sh \
-  centos
+  certbot
+
+
+if [ -f {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/thisisfirstrun ]
+  then
+    # remove temporary webserver
+    docker stop certbot_nginx
+    docker rm certbot_nginx
+fi
 
