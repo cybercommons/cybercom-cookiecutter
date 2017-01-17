@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #generate keys for nginx
-{% if cookiecutter.use_ssl != 'SelfSigned' %}# SSL has not been configured for nginx - to force generation of keys, uncomment the following lines:{% endif %}
-{% if cookiecutter.use_ssl != 'SelfSigned' %}#{% endif %}docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
-{% if cookiecutter.use_ssl != 'SelfSigned' %}#{% endif %}  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx:/sslnginx:z \
-{% if cookiecutter.use_ssl != 'SelfSigned' %}#{% endif %}  nginx ./sslnginx/generate
+{% if cookiecutter.use_ssl == 'None' %}# SSL has not been configured for nginx - to force generation of keys, uncomment the following lines:{% endif %}
+{% if cookiecutter.use_ssl == 'None' %}#{% endif %}docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
+{% if cookiecutter.use_ssl == 'None' %}#{% endif %}  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx:/sslnginx:z \
+{% if cookiecutter.use_ssl == 'None' %}#{% endif %}  nginx ./sslnginx/generate
 
 #generate keys for message broker and clients
 docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
