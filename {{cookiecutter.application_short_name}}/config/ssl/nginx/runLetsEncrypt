@@ -10,18 +10,30 @@ if [ -f {{cookiecutter.application_install_directory}}/{{cookiecutter.applicatio
       nginx
 
     sleep 5
-fi
 
-docker run -it --rm \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/etc:/etc/letsencrypt:z \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/www:/www:z \
-  certbot
+    # run certbot
+    docker run -it --rm \
+      -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/etc:/etc/letsencrypt:z \
+      -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/www:/www:z \
+      certbot
 
-
-if [ -f {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/thisisfirstrun ]
-  then
     # remove temporary webserver
     docker stop certbot_nginx
     docker rm certbot_nginx
-fi
 
+  else # not first run
+
+    # run certbot
+    docker run -it --rm \
+      -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/etc:/etc/letsencrypt:z \
+      -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt/www:/www:z \
+      certbot
+    
+    # reload nginx configs if above exits with 0 - this can also happen if the script is canceled by the user
+    if [ $? == 0 ]
+      then
+        #reload nginx configs without restarting
+        echo "<<<< Reloading Nginx Configs >>>>"
+        docker exec -it {{cookiecutter.application_short_name}}_nginx nginx -s reload
+  fi
+fi
