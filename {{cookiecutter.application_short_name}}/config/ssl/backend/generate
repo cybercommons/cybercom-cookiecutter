@@ -3,7 +3,7 @@
 # This script is used to generate keys for the message broker and clients
 # Rerun genSSLKeys to apply changes
 
-rootpath=/sslrabbitmq
+rootpath=/ssl
 testca=$rootpath/testca
 server=$rootpath/server
 client=$rootpath/client
@@ -19,7 +19,7 @@ touch $testca/index.txt
 echo 01 > $testca/serial
 
 openssl req -x509 -config $rootpath/ca.conf -newkey rsa:2048 -days {{cookiecutter.ssl_valid_days}} \
-  -out $testca/cacert.pem -outform PEM -subj /CN=MyTestCA/ -nodes
+  -out $testca/cacert.pem -outform PEM -subj /CN=cybercommonsCA/ -nodes
 openssl x509 -in $testca/cacert.pem -out $testca/cacert.cer -outform DER
 
 # Create Server certs
@@ -31,7 +31,7 @@ openssl ca -config $rootpath/ca.conf -in $server/req.pem -out \
 openssl pkcs12 -export -out $server/keycert.p12 -in $server/cert.pem \
   -inkey $server/key.pem -passout file:$rootpath/keystoresecret
 
-#Create client certs
+# Create client certs
 openssl genrsa -out $client/key.pem 2048
 openssl req -new -key $client/key.pem -out $client/req.pem -outform PEM \
   -subj /CN=localhost/O=client/ -nodes
@@ -39,4 +39,8 @@ openssl ca -config $rootpath/ca.conf -in $client/req.pem -out $client/cert.pem \
   -notext -batch -extensions client_ca_extensions
 openssl pkcs12 -export -out $client/keycert.p12 -in $client/cert.pem \
   -inkey $client/key.pem -passout file:$rootpath/keystoresecret
+
+# Concat key and cert for mongodb
+cat $server/key.pem $server/cert.pem > $server/mongodb.pem
+cat $client/key.pem $client/cert.pem > $client/mongodb.pem
 

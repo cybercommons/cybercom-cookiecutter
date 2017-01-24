@@ -23,21 +23,22 @@ fi
 
 docker run -d --name {{cookiecutter.application_short_name}}_mongo \
   -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/mongodb:/sslmongodb:z \
+  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
   mongo --sslMode requireSSL \
-        --sslPEMKeyFile /sslmongodb/keys/mongodb.pem \
+        --sslPEMKeyFile /ssl/server/mongodb.pem \
+        --sslCAFile /ssl/testca/cacert.pem
         --auth
 
 #Rabbitmq
 echo "************** Rabbitmq        ***********"
 docker run -d --name {{cookiecutter.application_short_name}}_rabbitmq \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/rabbitmq:/sslrabbitmq:z \
+  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
   -e "RABBITMQ_DEFAULT_USER=${broker_username}" \
   -e "RABBITMQ_DEFAULT_PASS=${broker_password}" \
   -e "RABBITMQ_DEFAULT_VHOST=${vhost}" \
-  -e "RABBITMQ_SSL_CERT_FILE=/sslrabbitmq/server/cert.pem" \
-  -e "RABBITMQ_SSL_KEY_FILE=/sslrabbitmq/server/key.pem" \
-  -e "RABBITMQ_SSL_CA_FILE=/sslrabbitmq/testca/cacert.pem" \
+  -e "RABBITMQ_SSL_CERT_FILE=/ssl/server/cert.pem" \
+  -e "RABBITMQ_SSL_KEY_FILE=/ssl/server/key.pem" \
+  -e "RABBITMQ_SSL_CA_FILE=/ssl/testca/cacert.pem" \
   rabbitmq #cybercom/rabbitmq
 
 #Celery
@@ -49,8 +50,7 @@ docker run -d --name {{cookiecutter.application_short_name}}_celery \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/celery/code:/code:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/log:/log:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/data:/data:z \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/rabbitmq:/sslconf:z \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/mongodb:/sslmongodb:z \
+  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
   -e "docker_worker=$host_ip" \
   -e "docker_username=$docker_username" \
   -e "C_FORCE_ROOT=true" \
@@ -68,8 +68,7 @@ docker run -d --name {{cookiecutter.application_short_name}}_api \
   --link {{cookiecutter.application_short_name}}_mongo:cybercom_mongo \
   --link {{cookiecutter.application_short_name}}_rabbitmq:cybercom_rabbitmq \
   -p 8080:8080 \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/rabbitmq:/sslconf:z \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/mongodb:/sslmongodb:z \
+  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ss:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3:z \
