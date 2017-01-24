@@ -15,6 +15,6 @@ docker run -d --name {{cookiecutter.application_short_name}}_mongo \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
   mongo --sslMode requireSSL \
         --sslPEMKeyFile /ssl/server/mongodb.pem \
-        --sslCAFile /ssl/testca/cacert.pem
+        --sslCAFile /ssl/testca/cacert.pem \
         --auth
 

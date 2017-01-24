@@ -26,7 +26,7 @@ docker run -d --name {{cookiecutter.application_short_name}}_mongo \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
   mongo --sslMode requireSSL \
         --sslPEMKeyFile /ssl/server/mongodb.pem \
-        --sslCAFile /ssl/testca/cacert.pem
+        --sslCAFile /ssl/testca/cacert.pem \
         --auth
 
 #Rabbitmq
@@ -68,7 +68,7 @@ docker run -d --name {{cookiecutter.application_short_name}}_api \
   --link {{cookiecutter.application_short_name}}_mongo:cybercom_mongo \
   --link {{cookiecutter.application_short_name}}_rabbitmq:cybercom_rabbitmq \
   -p 8080:8080 \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ss:z \
+  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/api_code:/usr/src/app:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/api_config.py:/usr/src/app/api/config.py:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/db.sqlite3:/usr/src/app/db.sqlite3:z \
