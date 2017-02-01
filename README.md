@@ -16,55 +16,116 @@ This repo uses cookiecutter to install the cyberCommons platform on a single nod
 Cookiecutter creates the following file structures:
 
 ```
-.
 ├── api_code (Github Repository https://github.com/cybercommons/cybercom-api)
-├── celery
-│   ├── code
-│   │   ├── celeryconfig.py
-│   │   └── requirements.txt
-│   └── log
-│       └── celery.log
 ├── config
+│   ├── addmongouser
 │   ├── api_config.py
-│   └── db.sqlite3
+│   ├── celery
+│   │   └── code
+│   │       ├── celeryconfig.py
+│   │       ├── celeryconfig.pyc
+│   │       └── requirements.txt
+│   ├── config.sh
+│   ├── db.sqlite3
+│   ├── nginx
+│   │   ├── default.conf
+│   │   ├── letsencrypt-signed.conf
+│   │   ├── nginx.conf
+│   │   ├── self-signed.conf
+│   │   └── ssl-params.conf
+│   └── ssl
+│       ├── backend
+│       │   ├── ca.conf
+│       │   ├── client
+│       │   │   ├── cert.pem
+│       │   │   ├── key.pem
+│       │   │   ├── keycert.p12
+│       │   │   ├── mongodb.pem
+│       │   │   └── req.pem
+│       │   ├── generate
+│       │   ├── keystoresecret
+│       │   ├── server
+│       │   │   ├── cert.pem
+│       │   │   ├── key.pem
+│       │   │   ├── keycert.p12
+│       │   │   ├── mongodb.pem
+│       │   │   └── req.pem
+│       │   └── testca
+│       │       ├── cacert.cer
+│       │       ├── cacert.pem
+│       │       ├── certs
+│       │       │   ├── 01.pem
+│       │       │   └── 02.pem
+│       │       ├── index.txt
+│       │       ├── index.txt.attr
+│       │       ├── index.txt.attr.old
+│       │       ├── index.txt.old
+│       │       ├── private
+│       │       │   └── cakey.pem
+│       │       ├── serial
+│       │       └── serial.old
+│       └── nginx
+│           ├── generate
+│           ├── keys
+│           │   ├── README.txt
+│           │   ├── _
+│           │   ├── dhparam.pem
+│           │   ├── selfsigned.crt
+│           │   └── selfsigned.key
+│           ├── letsencrypt
+│           │   ├── dockerfiles
+│           │   │   ├── dockerfile
+│           │   │   └── entrypoint.sh
+│           │   ├── etc
+│           │   │   └── _
+│           │   ├── nginx-bootstrap.conf
+│           │   └── www
+│           │       └── _
+│           └── runLetsEncrypt
 ├── data
-│   ├── api_log
-│   │   └── api.log
-│   ├── mongo (MongoDB data folder)
 │   ├── local
 │   │   └── static
 │   │       └── api (REST API CSS Content)
-│   └── static
+│   ├── mongo (MongoDB data folder)
+│   └── static (Web Accessible Directory)
 │       └── portal (Github Repository https://github.com/cybercommons/cybercom-portal)
-├── nginx
-│   ├── default.conf
-│   └── nginx.conf
+├── log
+│   ├── api.log
+│   └── celery.log
 └── run
-    ├── config.sh
-    ├── appContainerKill (Kills all application Docker Container.)
-    └── cybercom_up (Starts single node cyberCommons platform)
+    ├── appContainerKill
+    ├── cybercom_up
+    ├── genSSLKeys
+    └── resetDBCreds
 ```
-######1) Install Cybercommons Configuration 
+###1) Install Cybercommons Configuration 
 
 	$ cookiecutter https://github.com/cybercommons/cybercom-cookiecutter.git
  
 
 Cookiecutter Questions: Can enter information or press enter for default value.
 
+Author and Application Title: 
+
 	author [Some Guy]: 
 	application_title [Some Application]:
-	application_short_name [someapp]: 
 
 Application Short Name will be a directory name. DO NOT include spaces or illegal characters within short name.
+
+
+	application_short_name [someapp]: 
+
 	
+Nginx Server Name is the URL for the web server - default is to use "localhost"
+
 	nginx_server_name [localhost]:	
 
-Nginx Server Name is the URL for the web server - default is to use "localhost"
+Use SSL allows for settings up Secure HTTP (HTTPS) connections to the Nginx webserver - default is to not enable HTTPS. SSL Valid Days is used to set certificate expirations for MongoDB, RabbitMQ, and self-signed certificates. The default is set to 1 year. This expiration setting does not impact Let's Encrypt created certificates.
 
 	use_ssl [1 - None, 2 - LetsEncrypt, 3 - SelfSeigned]
 	ssl_valid_days [365]:
 	
-Use SSL allows for settings up Secure HTTP (HTTPS) connections to the Nginx webserver - default is to not enable HTTPS. SSL Valid Days is used to set certificate expirations for MongoDB, RabbitMQ, and self-signed certificates. The default is set to 1 year. This expiration setting does not impact Let's Encrypt created certificates.
+RabbitMQ: Broker Default host and ports - Message broker virtual host, username, and password.
 	
 	broker_host [localhost]:
 	broker_port [5672]:
@@ -72,26 +133,25 @@ Use SSL allows for settings up Secure HTTP (HTTPS) connections to the Nginx webs
 	broker_user [quser]:
 	broker_pass [qpass]:
 
-RabbitMQ: Broker Default host and ports - Message broker virtual host, username, and password.
+Queue Tasks: Github Organization, Repo, and Branch. Default will give you generic tasks with test add task.
 
 	queue_tasks_org [cybercommons]:
 	queue_tasks_repo [cybercomq]:
 	queue_tasks_branch [master]:
 	
-Queue Tasks: Github Organization, Repo, and Brach. Default will give you generic tasks with test add task. 
+Celery Concurrency: The number of concurrent tasks that can run simultaneously.  
 
 	celery_concurrency [8]:
 
-Celery Concurrency
+Docker: The docker_worker and docker_username are only used when celery tasks are going to create a sister/brother docker container. This is configured in cybercom_up file in the run directory. The docker_worker is the host where the docker container will be created. The docker_username is a user with ssh keys and has privledges to run docker commands. ssh keys are not setup and must be done to allow ssh to docker worker.
 	
 	docker_worker [example.oscer.ou.edu]:
 	docker_username [mstacy]:
 
-Docker: The docker_worker and docker_username are only used when celery tasks are going to create a sister/brother docker container to execute task. docker_worker is where the docker container will be created. The docker_username is a user with ssh keys and has privledges to run docker command. ssh keys are not setup and must be done to allow ssh to docker worker.
-	
+Application Install Directory: This is a work around for finding the current application install directory (install location). CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
+
 	application_install_directory [/opt]:
 	
-Application Install  Directory: This is a work around for the current install directory of cookiecutter. CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
 
 ######2) Build API Docker Container
 
@@ -109,14 +169,17 @@ Application Install  Directory: This is a work around for the current install di
 	
 	CONTAINER ID    IMAGE            COMMAND                  (Trimmed Output)                                                           
 	8586e51e37a4    nginx            "nginx -g 'daemon off"                                                
-	c7ee4754a2fc    api              "gunicorn --config=gu"   
+	c7ee4754a2fc    api              "gunicorn --config=gu"
+	cca72df2e81f    memcached        "/entrypoint.sh me..."   
 	364d90b9e7e3    cybercom/celery  "/run.sh" 
 	12dba22cf2a9    rabbitmq         "/docker-entrypoint.s"
 	b7e6efd64e33    mongo            "/entrypoint.sh mongo"  	
 
-__Navigate to http://<< host >>/ or http://<< host >>/portal or http://<< host >>/api/__
+###### Check Application
+1. Web Access __http://<< nginx_server_name >>/__
+2. Example portal application with add task  __http://<< nginx_server_name >>/portal__
+3. RESTful API  __http://<< nginx_server_name >>/api/__
 
-If install performed on Mac OSX system. Make sure your perform cookiecutter within your home directory. Virtualbox setup can only share directories within your home directory. Plus need to find ip address of virtualbox host. *__$ docker-machine ip default__*
 
 #####5) RESTful API and Portal Default User
 
