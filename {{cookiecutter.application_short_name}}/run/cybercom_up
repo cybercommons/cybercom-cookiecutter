@@ -102,6 +102,7 @@ docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_ng
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/nginx/letsencrypt-signed.conf:/etc/nginx/snippets/letsencrypt-signed.conf:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt:/letsencrypt:z \
+  -v ${ssl_dhparam_path}:/etc/ssl/certs/dhparam.pem \
   -d nginx
 {% else %}
 echo "********* Ngnix        ********************"
