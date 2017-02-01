@@ -3,7 +3,7 @@
 "application_title": "Some Application",
 "application_short_name": "someapp",
 "nginx_server_name": "localhost",
-"ssl_self_signed": ["n", "y"],
+"use_ssl": ["None", "LetsEncrypt", "SelfSigned"],
 "ssl_valid_days": 365,
 "broker_host": "localhost",
 "broker_port": 5671,
@@ -16,5 +16,5 @@
 "celery_concurrency":8,
 "docker_worker":"example.oscer.ou.edu",
 "docker_username":"mstacy",
-"docker_host_data_directory":"/opt"
+"application_install_directory":"/opt"
 }

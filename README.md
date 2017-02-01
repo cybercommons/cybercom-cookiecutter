@@ -57,15 +57,14 @@ Cookiecutter Questions: Can enter information or press enter for default value.
 
 Application Short Name will be a directory name. DO NOT include spaces or illegal characters within short name.
 	
-	memcache_host [127.0.0.1]:
-	memcache_port [11211]:
+	nginx_server_name [localhost]:	
 
-Memchache: Default host and port!	
+Nginx Server Name is the URL for the web server - default is to use "localhost"
 
-	mongo_host [localhost]:
-	mongo_port [27017]:
+	use_ssl [1 - None, 2 - LetsEncrypt, 3 - SelfSeigned]
+	ssl_valid_days [365]:
 	
-MongoDB: Default host and port
+Use SSL allows for settings up Secure HTTP (HTTPS) connections to the Nginx webserver - default is to not enable HTTPS. SSL Valid Days is used to set certificate expirations for MongoDB, RabbitMQ, and self-signed certificates. The default is set to 1 year. This expiration setting does not impact Let's Encrypt created certificates.
 	
 	broker_host [localhost]:
 	broker_port [5672]:
@@ -90,9 +89,9 @@ Celery Concurrency
 
 Docker: The docker_worker and docker_username are only used when celery tasks are going to create a sister/brother docker container to execute task. docker_worker is where the docker container will be created. The docker_username is a user with ssh keys and has privledges to run docker command. ssh keys are not setup and must be done to allow ssh to docker worker.
 	
-	docker_host_data_directory [/opt]:
+	application_install_directory [/opt]:
 	
-Docker Host Data Directory: This is a work around for the current install directory of cookiecutter. CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
+Application Install  Directory: This is a work around for the current install directory of cookiecutter. CookieCutter does have this capability, but for some reason could not figure out how to set an additional template parameter or access within template.
 
 ######2) Build API Docker Container
 
