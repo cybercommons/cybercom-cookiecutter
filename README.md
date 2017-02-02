@@ -26,61 +26,24 @@ Cookiecutter creates the following file structures:
 │   │       ├── celeryconfig.pyc
 │   │       └── requirements.txt
 │   ├── config.sh
-│   ├── db.sqlite3
-│   ├── nginx
-│   │   ├── default.conf
-│   │   ├── letsencrypt-signed.conf
-│   │   ├── nginx.conf
-│   │   ├── self-signed.conf
-│   │   └── ssl-params.conf
+│   ├── db.sqlite3 (Database of API users, permissions, and group settings)
+│   ├── nginx (Configuration related files)
 │   └── ssl
 │       ├── backend
 │       │   ├── ca.conf
-│       │   ├── client
-│       │   │   ├── cert.pem
-│       │   │   ├── key.pem
-│       │   │   ├── keycert.p12
-│       │   │   ├── mongodb.pem
-│       │   │   └── req.pem
+│       │   ├── client (Generated client side certificates)
 │       │   ├── generate
 │       │   ├── keystoresecret
-│       │   ├── server
-│       │   │   ├── cert.pem
-│       │   │   ├── key.pem
-│       │   │   ├── keycert.p12
-│       │   │   ├── mongodb.pem
-│       │   │   └── req.pem
-│       │   └── testca
-│       │       ├── cacert.cer
-│       │       ├── cacert.pem
-│       │       ├── certs
-│       │       │   ├── 01.pem
-│       │       │   └── 02.pem
-│       │       ├── index.txt
-│       │       ├── index.txt.attr
-│       │       ├── index.txt.attr.old
-│       │       ├── index.txt.old
-│       │       ├── private
-│       │       │   └── cakey.pem
-│       │       ├── serial
-│       │       └── serial.old
+│       │   ├── server (Generated server side certificates)
+│       │   └── testca (Generated CA files used to sign client and server side certifictes)
 │       └── nginx
 │           ├── generate
-│           ├── keys
-│           │   ├── README.txt
-│           │   ├── _
-│           │   ├── dhparam.pem
-│           │   ├── selfsigned.crt
-│           │   └── selfsigned.key
+│           ├── keys (generated dhparam and self signed certificates)
 │           ├── letsencrypt
-│           │   ├── dockerfiles
-│           │   │   ├── dockerfile
-│           │   │   └── entrypoint.sh
-│           │   ├── etc
-│           │   │   └── _
+│           │   ├── dockerfiles (Files used to generate Docker container)
+│           │   ├── etc (Let's Encrypt working files and generated certificates)
 │           │   ├── nginx-bootstrap.conf
-│           │   └── www
-│           │       └── _
+│           │   └── www (Working path for Let's Encrypt's .well-known/acme-challenge)
 │           └── runLetsEncrypt
 ├── data
 │   ├── local
@@ -153,17 +116,27 @@ Application Install Directory: This is a work around for finding the current app
 	application_install_directory [/opt]:
 	
 
-######2) Build API Docker Container
+###2) Build API Docker Container
 
 	$ cd someapp/api_code
 	$ docker build -t api .
 	$ cd ..
 	 
-######3) Run CyberCommons Platform
+###3) Build Let's Encrypt Docker Container
+If Let's Encrypt was selected during step 1, run the following commangs to build its container.
+
+    $ cd someapp/config/ssl/nginx/letsencrypt/dockerfiles
+    $ docker build -t certbot .
+    $ cd ../../
+    $ ./runLetsEncrypt
+        
+The runLetsEncrypt script can be manually executed to renew expired certificates or added to a cron job.
+
+###4) Run CyberCommons Platform
 
 	$ ./run/cybercom_up
 	
-#####4) Successful Installation 
+###5) Successful Installation 
 
 	$ docker ps
 	
