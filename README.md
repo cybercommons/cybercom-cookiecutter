@@ -123,7 +123,7 @@ Application Install Directory: This is a work around for finding the current app
 	$ cd ..
 	 
 ###3) Build Let's Encrypt Docker Container
-If Let's Encrypt was selected during step 1, run the following commangs to build its container.
+If Let's Encrypt was selected during step 1, run the following commands to build its container.
 
     $ cd someapp/config/ssl/nginx/letsencrypt/dockerfiles
     $ docker build -t certbot .
