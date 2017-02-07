@@ -92,3 +92,12 @@ DATA_STORE_MONGO_URI = 'mongodb://{{cookiecutter.broker_user}}:{{cookiecutter.br
 DATA_STORE_ANONYMOUS=True
 #*********** DOCKER_HOST_DATA_DIRECTORY ********************
 DOCKER_HOST_DATA_DIRECTORY = "{{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name }}"
+#*********** Email Configuration ********************
+# Uncomment and configure to enable send email
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_PORT = 587
+#EMAIL_HOST_USER = 'username'
+#EMAIL_HOST_PASSWORD = 'password'
+#EMAIL_USE_TLS = True
+
