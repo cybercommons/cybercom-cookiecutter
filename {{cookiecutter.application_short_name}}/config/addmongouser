@@ -12,12 +12,12 @@ sleep 5
 if [ ! -z ${mongo_admin_username+x} ]
   then
     echo "<<<<<<<<<< Adding Admin User >>>>>>>>>"
-    mongo admin --eval "db.createUser({ user: '$mongo_admin_username', pwd: '$mongo_admin_password', roles: [ { role: 'userAdmin', db: 'admin' } ] });"
+    mongo admin --eval "db.createUser({ user: '$mongo_admin_username', pwd: '$mongo_admin_password', roles: [ { role: '$mongo_admin_role', db: 'admin' } ] });"
 
     if [ $? == 252 ]
       then
         echo "<<<<<<<<<< Admin User Exists - Updating >>>>>>>>>" 
-        mongo admin --eval "db.updateUser('$mongo_admin_username', { pwd: '$mongo_admin_password', roles: [ { role: 'userAdmin', db: 'admin' } ] });"
+        mongo admin --eval "db.updateUser('$mongo_admin_username', { pwd: '$mongo_admin_password', roles: [ { role: '$mongo_admin_role', db: 'admin' } ] });"
     fi
 fi
 
