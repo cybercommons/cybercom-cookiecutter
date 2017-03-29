@@ -8,9 +8,9 @@
 
 1. add dockertask to requirements.txt file in celery
 2. Check/Generate ssh keys
-    
-    ssh-keygen # if keys are not present
-    cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
+
+	ssh-keygen # if keys are not present
+	cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
 
 3. Within cybercom_up check host_ip and docker_username. 
 
@@ -18,7 +18,7 @@
     * set docker_username current user
 
 4. Add datamount to celery docker container
-    
+
     -v path_to_key/.ssh:/root/.ssh:z
 
 
