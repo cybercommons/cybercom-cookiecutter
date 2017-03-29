@@ -10,6 +10,7 @@
 2. Check/Generate ssh keys
 
 	ssh-keygen # if keys are not present
+	
 	cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
 
 3. Within cybercom_up check host_ip and docker_username. 
@@ -17,7 +18,7 @@
     * Change host_ip to hostname or ip address of base system
     * set docker_username current user
 
-4. Add datamount to celery docker container
+4. Add datamount to celery docker container within cybercom_up
 
     -v path_to_key/.ssh:/root/.ssh:z
 
