@@ -22,12 +22,12 @@ if [ ! -z ${mongo_admin_username+x} ]
 fi
 
 echo "<<<<<<<<<< Adding Mongo User >>>>>>>>>"
-mongo admin --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
+mongo admin --eval "db.createUser({ user: '$mongo_username', pwd: '$mongo_password', roles: [ { role: 'dbAdminAnyDatabase', db: 'admin' }, { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
 
 if [ $? == 252 ]
   then
     echo "<<<<<<<<<< User Already Exists - Updating >>>>>>>>>" 
-    mongo admin --eval "db.updateUser('$mongo_username', { pwd: '$mongo_password', roles: [ { role: 'dbAdminAnyDatabase', db: 'admin' } ] });"
+    mongo admin --eval "db.updateUser('$mongo_username', { pwd: '$mongo_password', roles: [ { role: 'dbAdminAnyDatabase', db: 'admin' }, { role: 'readWriteAnyDatabase', db: 'admin' } ] });"
 fi
 
 /usr/bin/mongod --shutdown
