@@ -1,0 +1,34 @@
+#!/bin/bash
+source ../config/config.sh
+
+MONGO_CONTAINER={{cookiecutter.application_short_name}}_mongo
+MONGO_VOLUME={{cookiecutter.application_short_name}}_mongodata
+
+{% raw %}
+RUNNING=$(docker inspect --format="{{.State.Running}}" $MONGO_CONTAINER 2> /dev/null)
+
+if [ "$RUNNING" == "true" ]; then
+  
+  if [ -z ${mongo_admin_username+x} ]; then
+	  USER=$mongo_username
+	  PASS=$mongo_password
+	  echo "<<< Logging in with WORKER account $USER >>>"
+  else
+	  USER=$mongo_admin_username
+	  PASS=$mongo_admin_password
+	  echo "<<< Logging in with ADMIN account $USER >>>"
+  fi
+ 
+  docker exec -it $MONGO_CONTAINER \
+    mongo admin --ssl \
+    --sslPEMKeyFile /ssl/client/mongodb.pem \
+    --sslCAFile /ssl/testca/cacert.pem \
+    --sslAllowInvalidHostnames \
+    --username $USER \
+    --password $PASS
+else
+  docker run -it --rm \
+    -v $MONGO_VOLUME:/data/db:z \
+    mongo sh -c "mongod --fork --logpath --quiet && mongo admin"
+fi
+{% endraw %}
