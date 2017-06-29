@@ -1,7 +1,6 @@
 #!/bin/bash
 
 docker stop {{cookiecutter.application_short_name}}_mongo
-docker rm {{cookiecutter.application_short_name}}_mongo
 
 docker run -it --rm \
   -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z \
@@ -9,12 +8,4 @@ docker run -it --rm \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/addmongouser:/addmongouser \
   --entrypoint /addmongouser mongo
 
-
-docker run -d --name {{cookiecutter.application_short_name}}_mongo \
-  -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z \
-  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl:z \
-  mongo --sslMode requireSSL \
-        --sslPEMKeyFile /ssl/server/mongodb.pem \
-        --sslCAFile /ssl/testca/cacert.pem \
-        --auth
-
+docker start {{cookiecutter.application_short_name}}_mongo
