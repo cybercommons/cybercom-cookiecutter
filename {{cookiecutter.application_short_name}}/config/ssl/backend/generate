@@ -44,3 +44,6 @@ openssl pkcs12 -export -out $client/keycert.p12 -in $client/cert.pem \
 cat $server/key.pem $server/cert.pem > $server/mongodb.pem
 cat $client/key.pem $client/cert.pem > $client/mongodb.pem
 
+# Insure key.pem files are readable
+chmod 644 $server/key.pem
+chmod 644 $client/key.pem
