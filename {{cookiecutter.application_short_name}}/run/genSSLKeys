@@ -9,5 +9,5 @@
 #generate keys for message broker, mongodb, and clients
 docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/backend:/ssl \
-  nginx ./ssl/generate
+  nginx:1.11 ./ssl/generate
 

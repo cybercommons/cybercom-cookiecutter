@@ -90,7 +90,7 @@ docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_ng
   -v ${ssl_key_path}:/etc/ssl/private/selfsigned.key \
   -v ${ssl_cert_path}:/etc/ssl/certs/selfsigned.crt \
   -v ${ssl_dhparam_path}:/etc/ssl/certs/dhparam.pem \
-  -d nginx
+  -d nginx:1.11
 {% elif cookiecutter.use_ssl == 'LetsEncrypt' %}
 echo "********* Ngnix - Lets Encrypt SSL ********************"
 docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_nginx \
@@ -103,7 +103,7 @@ docker run -p 80:80 -p 443:443 --name {{cookiecutter.application_short_name}}_ng
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx/letsencrypt:/letsencrypt:z \
   -v ${ssl_dhparam_path}:/etc/ssl/certs/dhparam.pem \
-  -d nginx
+  -d nginx:1.11
 {% else %}
 echo "********* Ngnix        ********************"
 docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx \
@@ -111,7 +111,7 @@ docker run -p 80:80 --name {{cookiecutter.application_short_name}}_nginx \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/data:/data:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/nginx/nginx.conf:/etc/nginx/nginx.conf:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/nginx/default.conf:/etc/nginx/conf.d/default.conf:z \
-  -d nginx
+  -d nginx:1.11
 {% endif %}
 
 #Configure and add-ons to containers
