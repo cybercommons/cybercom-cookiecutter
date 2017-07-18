@@ -13,6 +13,8 @@
 	
 	cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
 
+	chmod 600 .ssh/authorized_keys # set permission to read/write for owner only
+
 3. Within cybercom_up check host_ip and docker_username. 
 
     * Change host_ip to hostname or ip address of base system
