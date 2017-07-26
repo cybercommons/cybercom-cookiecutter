@@ -4,7 +4,7 @@
 {% if cookiecutter.use_ssl == 'None' %}# SSL has not been configured for nginx - to force generation of keys, uncomment the following lines:{% endif %}
 {% if cookiecutter.use_ssl == 'None' %}#{% endif %}docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
 {% if cookiecutter.use_ssl == 'None' %}#{% endif %}  -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/ssl/nginx:/sslnginx:z \
-{% if cookiecutter.use_ssl == 'None' %}#{% endif %}  nginx ./sslnginx/generate
+{% if cookiecutter.use_ssl == 'None' %}#{% endif %}  nginx:1.11 ./sslnginx/generate
 
 #generate keys for message broker, mongodb, and clients
 docker run -it --rm --name {{cookiecutter.application_short_name}}_openssl \
