@@ -4,7 +4,7 @@ pymongo==3.2.1
 
 ### Example Tasks Github REPO - Example Task which adds two numbers or concatenates two strings
 #### Requirements add for cybercomq 
-paramiko==1.16.0
+paramiko==1.17.6
 requests==2.9.1
 https://github.com/ouinformatics/dockertask/zipball/master
 #### Cybercomq
