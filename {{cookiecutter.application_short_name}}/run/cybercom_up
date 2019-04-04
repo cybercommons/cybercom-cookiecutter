@@ -39,7 +39,7 @@ docker run -d --name {{cookiecutter.application_short_name}}_rabbitmq \
   -e "RABBITMQ_SSL_CERT_FILE=/ssl/server/cert.pem" \
   -e "RABBITMQ_SSL_KEY_FILE=/ssl/server/key.pem" \
   -e "RABBITMQ_SSL_CA_FILE=/ssl/testca/cacert.pem" \
-  rabbitmq #cybercom/rabbitmq
+  rabbitmq:3.6
 
 #Celery
 echo "********** Celery Async Queue ************"
