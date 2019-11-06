@@ -6,6 +6,6 @@ docker run -it --rm \
   -v {{cookiecutter.application_short_name}}_mongodata:/data/db:z \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/config.sh:/config.sh \
   -v {{cookiecutter.application_install_directory}}/{{cookiecutter.application_short_name}}/config/addmongouser:/addmongouser \
-  --entrypoint /addmongouser mongo
+  --entrypoint /addmongouser mongo:3
 
 docker start {{cookiecutter.application_short_name}}_mongo

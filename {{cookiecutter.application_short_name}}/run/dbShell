@@ -20,7 +20,7 @@ if [ "$RUNNING" == "true" ]; then
   fi
  
   docker exec -it $MONGO_CONTAINER \
-    mongo admin --ssl \
+    mongo:3 admin --ssl \
     --sslPEMKeyFile /ssl/client/mongodb.pem \
     --sslCAFile /ssl/testca/cacert.pem \
     --sslAllowInvalidHostnames \
@@ -29,6 +29,6 @@ if [ "$RUNNING" == "true" ]; then
 else
   docker run -it --rm \
     -v $MONGO_VOLUME:/data/db:z \
-    mongo sh -c "mongod --fork --logpath --quiet && mongo admin"
+    mongo:3 sh -c "mongod --fork --logpath --quiet && mongo admin"
 fi
 {% endraw %}
